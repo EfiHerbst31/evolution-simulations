@@ -27,18 +27,18 @@ footer:after{
 """
 
 
-def generate_offspring(seed, number_of_offsprings):
-    '''Generating offsprings per parent.
+def generate_offspring(seed, number_of_offspring):
+    '''Generating offspring per parent.
 
     Args:
-        seed: parent 'DNA' code.
-        number_of_offsprings: amount of offsprings to generate for this parent.
+        seed: parent character combination.
+        number_of_offspring: amount of offspring to generate for this parent.
 
     Returns:
-        offspring: the list of offsprings codes.
+        offspring: the list of offspring codes.
     '''
     offspring = []
-    for _ in range(number_of_offsprings):
+    for _ in range(number_of_offspring):
         offspring.append(seed)
     return offspring
 
@@ -60,18 +60,18 @@ def genetic_drift() -> None:
 
     #Page setup
     label_number_of_parents = "Amount of parents"
-    help_number_of_parents = "Amount of parents selected randomly in every generation"
+    help_number_of_parents = "Amount of parents selected randomly in each generation"
     number_of_parents = st.sidebar.slider(
         label_number_of_parents, 2, 1000, 100, 10, help=help_number_of_parents)
     
-    label_number_of_offsprings = "Offsprings per parent"
-    help_number_of_offsprings = "Amount of offsprings per parent in each generation"
-    number_of_offsprings = st.sidebar.slider(
-        label_number_of_offsprings, 1, 1000, 5, 1, help=help_number_of_offsprings)
+    label_number_of_offspring = "Offspring per parent"
+    help_number_of_offspring = "Amount of offspring per parent in each generation"
+    number_of_offspring = st.sidebar.slider(
+        label_number_of_offspring, 1, 1000, 5, 1, help=help_number_of_offspring)
     
     label_number_of_generations = "Maximum generations"
     help_number_of_generations = "Stop simulation after this amount of generations, \
-        unless there is a fixation"
+        unless a fixation is reached"
     number_of_generations = st.sidebar.slider(
         label_number_of_generations, 10, 5000, 500, 10, help=help_number_of_generations)
 
@@ -120,7 +120,7 @@ def genetic_drift() -> None:
 
     bar_pop = axr.bar(pops, counts, label=bar_labels, color=bar_colors)
     axr.set_ylabel('Population distribution')
-    axr.set_ylim([0, number_of_parents*number_of_offsprings])
+    axr.set_ylim([0, number_of_parents*number_of_offspring])
     axr.spines[['right', 'top']].set_visible(False)
 
     generation += 1
@@ -154,15 +154,15 @@ def genetic_drift() -> None:
 
         offspring = []
         for parent in rand_parents:
-            offspring.extend(generate_offspring(parent, number_of_offsprings))
+            offspring.extend(generate_offspring(parent, number_of_offspring))
 
         red_rate = offspring.count(seed_red)
         blue_rate = offspring.count(seed_blue)
         rand_parents = random.sample(offspring, number_of_parents)
 
         # Visualization           
-        X = np.random.uniform(0,1,(number_of_offsprings*number_of_parents))
-        Y = np.random.uniform(0,1,(number_of_offsprings*number_of_parents))
+        X = np.random.uniform(0,1,(number_of_offspring*number_of_parents))
+        Y = np.random.uniform(0,1,(number_of_offspring*number_of_parents))
         scat.set_offsets(np.c_[X, Y])
         scat.set_facecolors(rand_parents)
         text_1 = 'Generation: %s' %generation
@@ -203,24 +203,26 @@ st.markdown("# Genetic Drift")
 st.sidebar.header("Parameters")
 st.sidebar.write("Change any of the following parameters to generate a new simulation")
 st.write(
-    """This simulation demonstrates the genetic drift process, starting with two populations 
-    of specified distribution. In each generation parents are randomly selected to create 
-    the next generation. Fixation is reached when one population dominates and the other 
-    is extincted."""
+    """This simulation demonstrates the process of Genetic Drift. The original population consists
+            of parents with two alternative character states (represented by red and blue colors),
+            the proportion of which is set by the user. In each generation parents are randomly
+            selected to create the next generation. The offspring are identical to the parent,
+            and the number of offspring is set by the user. Fixation is reached when one
+            character-state dominates and the other is extinct."""
 )
 with st.expander("Learn more"):
     st.write("""
         The process of genetic drift occurs normally in small populations, 
              in which there is a genetic variaty between the groups 
              (here represented by red and blue populations). 
-             A random process selects just a few parents every generation 
-             without any advatage for any of the groups 
+             A random process selects just a few parents in each generation 
+             without any advatage to any of the groups 
              (representing natural processes such as the founder effect). 
-             A fixation of a specific gene is possible as 
-             demonstrated in the simulation, when one population is extincted. 
+             A fixation of a specific character-state is possible as 
+             demonstrated in the simulation, when one population dominates and the other is extinct. 
 
-        For simplicity, the model assumes that there is a single gene 
-             with only two variations (red and blue), and that there are no mutations.
+        For simplicity, the model assumes that the character-state has only 
+            two variations (red and blue), and that there are no mutations.
                      
         Changing the parameters will automatically generate a new simulation.
              You can also click the Re-run button to generate a new simulation using 
