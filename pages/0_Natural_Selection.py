@@ -298,7 +298,7 @@ def natural_selection() -> None:
         pattern = re.compile(r"(setTimeout.*?;)(.*?})", re.MULTILINE | re.DOTALL)
         new_animjs = pattern.sub(rf"\1 \n {click_on_play} \2", animjs)
 
-    st.components.v1.html(new_animjs,height=600)
+    st.components.v1.html(new_animjs,height=600, scrolling=True)
 
 st.set_page_config(page_title="Natural Selection", page_icon=':earth_americas:')
 st.markdown(add_footer, unsafe_allow_html=True)
