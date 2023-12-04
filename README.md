@@ -8,3 +8,7 @@ v1 November 2023
 
 Author:
 * @Efiherbst31 : https://github.com/EfiHerbst31
+
+<img src="NS.png" alt="Natural Selection" width=500 href="none"></img>
+
+<img src="GD.png" alt="Genetic Drift" width=500 href="none"></img>
