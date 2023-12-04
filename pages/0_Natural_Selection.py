@@ -15,7 +15,7 @@ footer{
     visibility:visible;
 }
 footer:after{
-    content: 'Efrat Herbst, Dr. Ofer Mokady and Prof. Zohar Yakhini';
+    content: 'Efrat Herbst, Prof. Zohar Yakhini and Dr. Ofer Mokady';
     display:block;
     position:relative;
     color:grey;
@@ -34,16 +34,16 @@ def generate_offspring(seed, mutation_rate_offspring,
 
     Args:
         seed: parent character combination.
-        mutation_rate_offspring: the chance for an offspring to go through mutation.
-        mutation_rate_digit: for an offspring who is going under mutation, 
-            this is the chance for every digit to go under mutation.
+        mutation_rate_offspring: the probability for an offspring to go through mutation.
+        mutation_rate_digit: for an offspring which is going under mutation, 
+            this is the probability for every digit to go under mutation.
         mutation_rate_digit_up: for a digit which is going under mutation,
-            this is the chance for it to go up over down.
+            this is the probability for it to go up over down.
         mutation_rate_digit_up_plus: for a digit which is going under a mutation upward,
-            this is the chance to go up in +1 over +2 digits.
+            this is the probability to go up in +1 over +2 digits.
         mutation_rate_digit_down_minus: for a digit which is going under a mutation downward,
-            this is the chance to go down in -1 over -2 digits. 
-        number_of_offspring: amount of offspring to generate for this parent.
+            this is the probability to go down in -1 over -2 digits. 
+        number_of_offspring: number of offspring to generate for this parent.
 
     Returns:
         offspring: the list of offspring codes.
@@ -123,7 +123,7 @@ def natural_selection() -> None:
     carry_on = True
 
     #Page setup
-    help_number_of_digits="representing the length of the character combination"
+    help_number_of_digits="Representing the length of the character combination"
     number_of_digits = st.sidebar.slider(
        "Number of digits", 1, 20, 6, 1, help=help_number_of_digits)
     
@@ -148,37 +148,40 @@ def natural_selection() -> None:
        label_average_number_of_offspring, 1.0, 2.0, 1.2, 0.1, help=help_average_number_of_offspring)
     
     label_number_of_parents = "Number of parents"
-    help_number_of_parents = "Amount of parents selected in each generation"
+    help_number_of_parents = "Number of parents selected in each generation"
     number_of_parents = st.sidebar.slider(
        label_number_of_parents, 0, 1000, 200, 10, help=help_number_of_parents)
     
-    label_mutation_rate_offspring = "Chance for mutation in an offspring"
-    help_mutation_rate_offspring = "Offspring chance to mutate"
+    label_mutation_rate_offspring = "Probability for mutation in an offspring"
+    help_mutation_rate_offspring = "Offspring probability to mutate"
     mutation_rate_offspring = st.sidebar.slider(
        label_mutation_rate_offspring, 0.0, 1.0, 0.05, 0.01, help=help_mutation_rate_offspring) 
     
-    label_mutation_rate_digit = "Chance for mutation in a digit"
-    help_mutation_rate_digit = "For an offspring which got a chance to mutate, \
-        this is the chance for each of the digits to mutate. \
+    label_mutation_rate_digit = "Probability for mutation in a digit"
+    help_mutation_rate_digit = "For an offspring which got selected to mutate, \
+        this is the probability for each of the digits to mutate. \
             This mutation represents a slight change in a character state"
     mutation_rate_digit = st.sidebar.slider(
        label_mutation_rate_digit, 0.0, 1.0, 0.1, 0.05, help=help_mutation_rate_digit)
 
-    label_mutation_rate_digit_up = "Chance for mutated digit to go up (versus down)"
-    help_mutation_rate_digit_up = "If a digit got a chance to mutate, this is the chance for it to move up or down. \
-        For example, this is the chance for a bird's wing to get slightly longer or slightly shorter"
+    label_mutation_rate_digit_up = "Probability for mutated digit to go up (versus down)"
+    help_mutation_rate_digit_up = "For a digit which got selected to mutate, this is the probability \
+        for it to move up or down. For example, this is the probability for a bird's wing to get \
+            slightly longer or slightly shorter"
     mutation_rate_digit_up = st.sidebar.slider(
        label_mutation_rate_digit_up, 0.0, 1.0, 0.5, 0.05, help=help_mutation_rate_digit_up)
     
-    label_mutation_rate_digit_up_plus = "Chance for mutated digit to jump 1 step up (versus 2 steps up)"
-    help_mutation_rate_digit_up_plus = "For a digit which got a chance to mutate up, this is the chance \
-        for it to move one digit up over two digits up"
+    label_mutation_rate_digit_up_plus = "Probability for mutated digit to jump 1 step up \
+        (versus 2 steps up)"
+    help_mutation_rate_digit_up_plus = "For a digit which got selected to mutate up, \
+        this is the probability for it to move one digit up over two digits up"
     mutation_rate_digit_up_plus = st.sidebar.slider(
        label_mutation_rate_digit_up_plus, 0.0, 1.0, 1.0, 0.05, help=help_mutation_rate_digit_up_plus)
 
-    label_mutation_rate_digit_down_minus = "Chance for mutated digit to jump 1 step down (versus 2 steps down)"
-    help_mutation_rate_digit_down_minus = "For a digit which got a chance to mutate down, this is the chance \
-        for it to move one digit down over two digits down"
+    label_mutation_rate_digit_down_minus = "Probability for mutated digit to jump 1 step down \
+        (versus 2 steps down)"
+    help_mutation_rate_digit_down_minus = "For a digit which got selected to mutate down, \
+        this is the probability for it to move one digit down over two digits down"
     mutation_rate_digit_down_minus = st.sidebar.slider(
        label_mutation_rate_digit_down_minus, 0.0, 1.0, 1.0, 0.05, help=help_mutation_rate_digit_down_minus)
 
@@ -290,7 +293,7 @@ def natural_selection() -> None:
         return scat,
 
     rcParams['animation.embed_limit'] = 2**128
-    with st.spinner(text="Preparing simulation..."):
+    with st.spinner(text="Running simulation...  \rAnimation coming momentarily"):
         ani = FuncAnimation(fig, update, 
                     frames=gen, save_count=None, interval=100, repeat=False) 
         animjs = ani.to_jshtml()
@@ -332,12 +335,15 @@ with st.expander("Learn more"):
     Note that the target number represents the character combination which best fits 
              specific environment conditions. In real life, environment conditions 
              change all the time (for example, because of global warming). 
-             The character combination which gives the most chances to survive changes respectively.
+             The character combination which gives the most probability to survive changes 
+             respectively.
         
     Changing the parameters, seed and target numbers will automatically generate 
              a new simulation. You can also click the Re-run button to generate 
              a new simulation using the same parameters to observe a different 
-             random process.
+             random process. Note that some parameter combinations may result in 
+             a very long time to convergence.
+
     """)
 
 

@@ -24,7 +24,7 @@ footer{
     visibility:visible;
 }
 footer:after{
-    content: 'Efrat Herbst, Dr. Ofer Mokady and Prof. Zohar Yakhini';
+    content: 'Efrat Herbst, Prof. Zohar Yakhini and Dr. Ofer Mokady';
     display:block;
     position:relative;
     color:grey;
@@ -53,10 +53,11 @@ def run():
         **👈 Select a simulation from the sidebar** to watch these concepts 
         in action.
         ### Want to learn more?
-        - Check out [a link to evolution...](https://streamlit.io)
-        ### This app is provided by...
-        - Reichman university [some website?](https://github.com/streamlit/demo-self-driving)
-        - Israel learning.... [some website?](https://github.com/streamlit/demo-uber-nyc-pickups)
+        - Check out the book [Evolution by Mark Ridley](https://tsjok45.files.wordpress.com/2011/01/evolution__3rd_edition-ridley-book.pdf)
+        ### This app is provided by
+        - [MSc Machine Learning & Data Science Program, Reichman University](https://www.datasci-ml-msc.education/)
+        - [Yakhini Research Group](https://zohary.cswp.cs.technion.ac.il/)
+        - [The Center for Educational Technology](https://home.cet.ac.il/?lang=en)
     """
     )
 

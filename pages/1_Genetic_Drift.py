@@ -15,7 +15,7 @@ footer{
     visibility:visible;
 }
 footer:after{
-    content: 'Efrat Herbst, Dr. Ofer Mokady and Prof. Zohar Yakhini';
+    content: 'Efrat Herbst, Prof. Zohar Yakhini and Dr. Ofer Mokady';
     display:block;
     position:relative;
     color:grey;
@@ -32,7 +32,7 @@ def generate_offspring(seed, number_of_offspring):
 
     Args:
         seed: parent character combination.
-        number_of_offspring: amount of offspring to generate for this parent.
+        number_of_offspring: numer of offspring to generate for this parent.
 
     Returns:
         offspring: the list of offspring codes.
@@ -59,24 +59,24 @@ def genetic_drift() -> None:
     rand_parents = []
 
     #Page setup
-    label_number_of_parents = "Amount of parents"
-    help_number_of_parents = "Amount of parents selected randomly in each generation"
+    label_number_of_parents = "Number of parents"
+    help_number_of_parents = "Number of parents selected randomly in each generation"
     number_of_parents = st.sidebar.slider(
         label_number_of_parents, 2, 1000, 100, 10, help=help_number_of_parents)
     
     label_number_of_offspring = "Offspring per parent"
-    help_number_of_offspring = "Amount of offspring per parent in each generation"
+    help_number_of_offspring = "Number of offspring per parent in each generation"
     number_of_offspring = st.sidebar.slider(
         label_number_of_offspring, 1, 1000, 5, 1, help=help_number_of_offspring)
     
     label_number_of_generations = "Maximum generations"
-    help_number_of_generations = "Stop simulation after this amount of generations, \
+    help_number_of_generations = "Stop simulation after this number of generations, \
         unless a fixation is reached"
     number_of_generations = st.sidebar.slider(
         label_number_of_generations, 10, 5000, 500, 10, help=help_number_of_generations)
 
     placeholder_reds = int(number_of_parents/2)
-    label_red_rate = "Enter the amount of red items out of %s initial parents: " %number_of_parents
+    label_red_rate = "Enter the number of red parents out of %s initial parents: " %number_of_parents
     help_red_rate = "Defines the initial distribution of red and blue items"
     red_rate = st.number_input(
         label=label_red_rate, 
@@ -187,7 +187,7 @@ def genetic_drift() -> None:
         return scat, bar_pop,
 
     rcParams['animation.embed_limit'] = 2**128
-    with st.spinner(text="Preparing simulation..."):
+    with st.spinner(text="Running simulation...  \rAnimation coming momentarily"):
         ani = FuncAnimation(fig, update, 
                     frames=gen, save_count=None, interval=100, repeat=False) 
         animjs = ani.to_jshtml()
@@ -227,6 +227,9 @@ with st.expander("Learn more"):
         Changing the parameters will automatically generate a new simulation.
              You can also click the Re-run button to generate a new simulation using 
              the same parameters to observe a different random process with a different outcome.
+             Note that some parameter combinations may result in a very long time to convergence. 
+             The 'Maximum generations' is a technical parameter designed to set a maximum limit 
+             to very long simulations.
     """)
 
 
