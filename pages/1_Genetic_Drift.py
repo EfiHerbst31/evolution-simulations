@@ -126,8 +126,8 @@ def genetic_drift() -> None:
             frame_number: frame number.
 
         Returns:
-            scat: updated scatter plot.
-            bar_pop: updated bar plot.
+            Updated scatter plot.
+            Updated bar plot.
         """
         global generation, carry_on, rand_parents
 
