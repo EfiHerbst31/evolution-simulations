@@ -37,16 +37,16 @@ footer:after{
 
 def run():
     st.set_page_config(
-        page_title="Evolution Simulator",
+        page_title='Evolution Simulator',
         page_icon=':earth_americas:',
     )
     st.markdown(add_footer, unsafe_allow_html=True)
 
-    st.write("# Welcome to the Evolution Simulator!")
-    st.sidebar.success("Select a simulation above.")
+    st.write('# Welcome to the Evolution Simulator!')
+    st.sidebar.success('Select a simulation above.')
 
     st.markdown(
-        """
+        '''
         This app is desined to demonstrate some of the concepts underlying 
         the complex process of Evolution, as research understand it to date.
         
@@ -58,7 +58,7 @@ def run():
         - [MSc Machine Learning & Data Science Program, Reichman University](https://www.datasci-ml-msc.education/)
         - [Yakhini Research Group](https://zohary.cswp.cs.technion.ac.il/)
         - [The Center for Educational Technology](https://home.cet.ac.il/?lang=en)
-    """
+    '''
     )
 
 
