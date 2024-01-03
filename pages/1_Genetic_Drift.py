@@ -26,71 +26,59 @@ footer:after{
 </style>
 """
 
-
-def generate_offspring(seed, number_of_offspring):
-    '''Generating offspring per parent.
+def generate_offspring(seed: str, number_of_offspring: int) -> list:
+    """Generates offspring per parent.
 
     Args:
         seed: parent character combination.
         number_of_offspring: numer of offspring to generate for this parent.
 
     Returns:
-        offspring: the list of offspring codes.
-    '''
+        List of offspring codes.
+    """
     offspring = []
     for _ in range(number_of_offspring):
         offspring.append(seed)
     return offspring
 
-
 def genetic_drift() -> None:
-    '''Main function for Genetic Drift page    
-
-    Args: 
-        None
-
-    Returns:
-        None
-
-    '''
+    """Main function for Genetic Drift page.
+    """
     global generation, carry_on, rand_parents
     generation = 0
     carry_on = True
     rand_parents = []
 
-    #Page setup
-    label_number_of_parents = "Number of parents"
-    help_number_of_parents = "Number of parents selected randomly in each generation"
+    #Page setup.
+    label_number_of_parents = 'Number of parents'
+    help_number_of_parents = 'Number of parents selected randomly in each generation'
     number_of_parents = st.sidebar.slider(
         label_number_of_parents, 2, 1000, 100, 10, help=help_number_of_parents)
     
-    label_number_of_offspring = "Offspring per parent"
-    help_number_of_offspring = "Number of offspring per parent in each generation"
+    label_number_of_offspring = 'Offspring per parent'
+    help_number_of_offspring = 'Number of offspring per parent in each generation'
     number_of_offspring = st.sidebar.slider(
         label_number_of_offspring, 1, 1000, 5, 1, help=help_number_of_offspring)
     
-    label_number_of_generations = "Maximum generations"
-    help_number_of_generations = "Stop simulation after this number of generations, \
-        unless a fixation is reached"
+    label_number_of_generations = 'Maximum generations'
+    help_number_of_generations = ('Stop simulation after this number of generations, '
+    'unless a fixation is reached')
     number_of_generations = st.sidebar.slider(
         label_number_of_generations, 10, 5000, 500, 10, help=help_number_of_generations)
 
     placeholder_reds = int(number_of_parents/2)
-    label_red_rate = "Enter the number of red parents out of %s initial parents: " %number_of_parents
-    help_red_rate = "Defines the initial distribution of red and blue items"
+    label_red_rate = 'Enter the number of red parents out of %s initial parents: ' %number_of_parents
+    help_red_rate = 'Defines the initial distribution of red and blue items'
     red_rate = st.number_input(
-        label=label_red_rate, 
-        min_value=1, 
-        max_value=number_of_parents, 
-        value=placeholder_reds, 
-        help=help_red_rate)
+        label=label_red_rate, min_value=1, max_value=number_of_parents, 
+        value=placeholder_reds, help=help_red_rate)
     blue_rate = number_of_parents - red_rate
-    st.button("Re-run")
+    st.button('Re-run')
 
     seed_red = 'r'
     seed_blue = 'b'
     
-    #First generation
+    #First generation.
     all_offspring = []
     offspring = []
     for i in range(red_rate):
@@ -98,17 +86,14 @@ def genetic_drift() -> None:
     for i in range(blue_rate):
         rand_parents.append(seed_blue)
     
-    # Visualization     
+    # Visualization.  
     fig, (axl, axr) = plt.subplots(
-    ncols=2,
-    sharey=False,
-    gridspec_kw=dict(width_ratios=[5, 1], wspace=0.5),
-    )      
+        ncols=2, sharey=False, gridspec_kw=dict(width_ratios=[5, 1], wspace=0.5),)      
     axl.yaxis.set_visible(False)
     axl.xaxis.set_visible(False)
-    X = np.random.uniform(0,1,(number_of_parents))
-    Y = np.random.uniform(0,1,(number_of_parents))
-    scat = axl.scatter(X,Y, c=rand_parents)
+    X = np.random.uniform(0, 1, (number_of_parents))
+    Y = np.random.uniform(0, 1, (number_of_parents))
+    scat = axl.scatter(X, Y, c=rand_parents)
     text_1 = 'Generation: %s' %generation
     axl.title.set_text(text_1)
     axl.axis('off')
@@ -120,20 +105,14 @@ def genetic_drift() -> None:
 
     bar_pop = axr.bar(pops, counts, label=bar_labels, color=bar_colors)
     axr.set_ylabel('Population distribution')
-    axr.set_ylim([0, number_of_parents*number_of_offspring])
+    axr.set_ylim([0, number_of_parents * number_of_offspring])
     axr.spines[['right', 'top']].set_visible(False)
 
     generation += 1
 
-    def gen():
-        '''Generates frames as long as simulation has not ended.
-
-        Args:
-            None
-
-        Returns: 
-            None
-        '''
+    def gen() -> None:
+        """Generates frames as long as simulation has not ended.
+        """
         global carry_on
         i = 0
         while carry_on:
@@ -141,7 +120,7 @@ def genetic_drift() -> None:
             yield i
         
     def update(frame_number):
-        '''Updates computations and plots for every generation
+        """Updates computations and plots for every generation.
 
         Args:
             frame_number: frame number.
@@ -149,7 +128,7 @@ def genetic_drift() -> None:
         Returns:
             scat: updated scatter plot.
             bar_pop: updated bar plot.
-        '''
+        """
         global generation, carry_on, rand_parents
 
         offspring = []
@@ -161,8 +140,8 @@ def genetic_drift() -> None:
         rand_parents = random.sample(offspring, number_of_parents)
 
         # Visualization           
-        X = np.random.uniform(0,1,(number_of_offspring*number_of_parents))
-        Y = np.random.uniform(0,1,(number_of_offspring*number_of_parents))
+        X = np.random.uniform(0, 1, (number_of_offspring * number_of_parents))
+        Y = np.random.uniform(0, 1, (number_of_offspring * number_of_parents))
         scat.set_offsets(np.c_[X, Y])
         scat.set_facecolors(rand_parents)
         text_1 = 'Generation: %s' %generation
@@ -180,38 +159,37 @@ def genetic_drift() -> None:
 
         if generation >= number_of_generations or len(set(offspring)) == 1:
             carry_on = False
-            print("\nStopping at generation %s!" %generation)
+            print('\nStopping at generation %s!' %generation)
 
         generation += 1        
 
         return scat, bar_pop,
 
     rcParams['animation.embed_limit'] = 2**128
-    with st.spinner(text="Running simulation...  \rAnimation coming momentarily"):
-        ani = FuncAnimation(fig, update, 
-                    frames=gen, save_count=None, interval=100, repeat=False) 
+    with st.spinner(text='Running simulation...  \rAnimation coming momentarily'):
+        ani = FuncAnimation(fig, update, frames=gen, save_count=None, interval=100, repeat=False) 
         animjs = ani.to_jshtml()
         click_on_play = """document.querySelector('.anim-buttons button[title="Play"]').click();"""
-        pattern = re.compile(r"(setTimeout.*?;)(.*?})", re.MULTILINE | re.DOTALL)
-        new_animjs = pattern.sub(rf"\1 \n {click_on_play} \2", animjs)
+        pattern = re.compile(r'(setTimeout.*?;)(.*?})', re.MULTILINE | re.DOTALL)
+        new_animjs = pattern.sub(rf'\1 \n {click_on_play} \2', animjs)
 
     st.components.v1.html(new_animjs,height=600,scrolling=True)
 
-st.set_page_config(page_title="Genetic Drift", page_icon=':earth_americas:')
+st.set_page_config(page_title='Genetic Drift', page_icon=':earth_americas:')
 st.markdown(add_footer, unsafe_allow_html=True)
-st.markdown("# Genetic Drift")
-st.sidebar.header("Parameters")
-st.sidebar.write("Change any of the following parameters to generate a new simulation")
+st.markdown('# Genetic Drift')
+st.sidebar.header('Parameters')
+st.sidebar.write('Change any of the following parameters to generate a new simulation')
 st.write(
-    """This simulation demonstrates the process of Genetic Drift. The original population consists
+    '''This simulation demonstrates the process of Genetic Drift. The original population consists
             of parents with two alternative character states (represented by red and blue colors),
             the proportion of which is set by the user. In each generation parents are randomly
             selected to create the next generation. The offspring are identical to the parent,
             and the number of offspring is set by the user. Fixation is reached when one
-            character-state dominates and the other is extinct."""
+            character-state dominates and the other is extinct.'''
 )
-with st.expander("Learn more"):
-    st.write("""
+with st.expander('Learn more'):
+    st.write('''
         The process of genetic drift occurs normally in small populations, 
              in which there is a genetic variaty between the groups 
              (here represented by red and blue populations). 
@@ -230,7 +208,7 @@ with st.expander("Learn more"):
              Note that some parameter combinations may result in a very long time to convergence. 
              The 'Maximum generations' is a technical parameter designed to set a maximum limit 
              to very long simulations.
-    """)
+    ''')
 
 
 genetic_drift()
